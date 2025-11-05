@@ -1,26 +1,27 @@
-# Use the official PHP + Apache image
+# Use official PHP + Apache image
 FROM php:8.1-apache
 
-# Enable common PHP extensions
+# Enable commonly used PHP extensions
 RUN docker-php-ext-install mysqli pdo pdo_mysql && \
     a2enmod rewrite
-
-# Remove the default Apache web files
-RUN rm -rf /var/www/html/*
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy your project files into the container
-COPY . /var/www/html/
+# Remove default Apache HTML files
+RUN rm -rf /var/www/html/*
 
-# (Optional) Copy a custom Apache config if you have one
-# COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+# Copy your site files into the container
+COPY . /var/www/html
 
-# Set correct permissions
+# Fix file permissions
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose port 80
+# Enable .htaccess overrides if needed
+RUN sed -i 's!/var/www/html!/var/www/html!g' /etc/apache2/sites-available/000-default.conf && \
+    sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
+# Expose Apache port
 EXPOSE 80
 
 # Start Apache

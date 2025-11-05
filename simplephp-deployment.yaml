@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: simplephp
-        image: sheetalsshetty/labexam:v1
+        image: sheetalsshetty/labexam:v2
         ports:
         - containerPort: 80

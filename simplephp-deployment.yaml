@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simplephp
+  labels:
+    app: simplephp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simplephp
+  template:
+    metadata:
+      labels:
+        app: simplephp
+    spec:
+      containers:
+      - name: simplephp
+        image: sheetalsshetty/labexam:v1
+        ports:
+        - containerPort: 80

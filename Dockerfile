@@ -12,23 +12,12 @@
 # #ADD . /var/www/html/
 # EXPOSE 80
 # ENTRYPOINT apachectl -D FOREGROUND
-FROM php:8.2-apache
-
-# Copy a custom Apache configuration file to the container
-# This file will override or supplement the default configuration
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-
-# Enable the custom site configuration
-RUN a2ensite 000-default.conf
-
-# Reload Apache to apply the changes
-RUN service apache2 reload
-
-# Set the working directory for subsequent instructions
-WORKDIR /var/www/html/php
-COPY . .
-
+FROM php:7.4-apache
+RUN sed -i 's|http://deb.debian.org/debian/|http://ftp.debian.org/debian/|g' /etc/apt/sources.list
+RUN apt-get update -y
+RUN docker-php-ext-install mysqli
+COPY . /var/www/html/
+RUN rm /var/www/html/index.html
 EXPOSE 80
-ENTRYPOINT apachectl -D FOREGROUND
 
 # Copy your application files into th

@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    DEST_DIR="/var/www/html/cafestatic"
+                    DEST_DIR="/var/www/html/basicphp"
                     APACHE_CONF="/etc/apache2/sites-available/000-default.conf"
 
                     echo "Creating directory if not exists..."

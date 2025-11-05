@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: simplephp
+  name: simplephp
+spec:
+  type: NodePort
+  ports:
+    - port: 89
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: simplephp

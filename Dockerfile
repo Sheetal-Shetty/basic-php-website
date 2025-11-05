@@ -8,7 +8,7 @@
 
 FROM ubuntu:latest
 RUN apt-get update -y && apt-get install -y apache2
-#RUN rm -rf /var/www/html/index.html
+RUN rm -f /var/www/html/index.html
 ADD . /var/www/html/
 EXPOSE 80
 ENTRYPOINT apachectl -D FOREGROUND

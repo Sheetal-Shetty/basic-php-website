@@ -1,23 +1,25 @@
-# FROM php:8.2-apache
-# ARG DEBIAN_FRONTEND=noninteractive
-# ENV APACHE_DOCUMENT_ROOT=/var/www/html/phpapp
-# #RUN sed -i 's/http:\/\/archive.ubuntu.com\/ubuntu\//https:\/\/archive.ubuntu.com\/ubuntu\//g' /etc/apt/sources.list
-# #RUN sed -i 's/http:\/\/archive.ubuntu.com\//http:\/\/us.archive.ubuntu.com\//g' /etc/apt/sources.list
-# RUN apt-get update -y && apt-get install -y apache2
-# RUN mkdir /var/www/html/phpapp
-# RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
-#         sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-# WORKDIR /var/www/html/phpapp
-# COPY . .
-# #ADD . /var/www/html/
-# EXPOSE 80
-# ENTRYPOINT apachectl -D FOREGROUND
-FROM php:7.4-apache
-RUN sed -i 's|http://deb.debian.org/debian/|http://ftp.debian.org/debian/|g' /etc/apt/sources.list
-RUN apt-get update -y
-RUN docker-php-ext-install mysqli
-COPY . /var/www/html/
+# Use an official PHP image with Apache
+FROM php:8.2-apache
 
+# Set working directory in the container
+WORKDIR /var/www/html
+
+# Copy the website files into the container
+COPY . /var/www/html
+
+# Enable Apache mod_rewrite (if your site uses URL rewriting)
+RUN a2enmod rewrite
+
+# Adjust Apache config to allow .htaccess overrides (if needed)
+RUN sed -i '/<Directory \/var\/www\/html>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Set appropriate permissions (optional, adjust as necessary)
+RUN chown -R www-data:www-data /var/www/html \
+    && find /var/www/html -type f -exec chmod 644 {} \; \
+    && find /var/www/html -type d -exec chmod 755 {} \;
+
+# Expose port 80
 EXPOSE 80
 
-# Copy your application files into th
+# Start Apache in foreground
+CMD ["apache2-foreground"]

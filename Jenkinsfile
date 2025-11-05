@@ -2,6 +2,13 @@ pipeline {
     agent any
 
     stages {
+        stage('Lint'){
+            steps{
+                script {
+                    sh '''
+                    php -l *.php
+                    '''
+        }
         stage('Deploy Website') {
             steps {
                 script {

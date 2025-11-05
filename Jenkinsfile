@@ -5,9 +5,10 @@ pipeline {
         stage('Lint'){
             steps{
                 script {
-                    sh '''
-                    php -l *.php
-                    '''
+                    sh 'php -l *.php'
+                }
+            }
+
         }
         stage('Deploy Website') {
             steps {

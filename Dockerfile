@@ -1,7 +1,6 @@
 FROM php:7.4-apache
-RUN sed -i 's|http://deb.debian.org/debian/|http://ftp.debian.org/debian/|g' /etc/apt/sources.list
 RUN apt-get update -y
-RUN docker-php-ext-install mysqli
-RUN rm -rf /var/www/html/index.html
+RUN rm -rf /var/www/html/*
 COPY . /var/www/html/
 EXPOSE 80
+CMD ["apache2-foreground"]

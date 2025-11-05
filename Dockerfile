@@ -17,7 +17,7 @@ RUN sed -i 's|http://deb.debian.org/debian/|http://ftp.debian.org/debian/|g' /et
 RUN apt-get update -y
 RUN docker-php-ext-install mysqli
 COPY . /var/www/html/
-RUN rm /var/www/html/index.html
+
 EXPOSE 80
 
 # Copy your application files into th

@@ -13,11 +13,22 @@
 # EXPOSE 80
 # ENTRYPOINT apachectl -D FOREGROUND
 
-
 FROM php:8.2-apache
 
-# Copy the PHP files from your local 'src' directory into the container's web root
-COPY . /var/www/html/
+# Install necessary PHP extensions (example: MySQLi, PDO, PDO_MySQL)
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Expose port 80 to allow external access to the web server
+# Enable Apache rewrite module for clean URLs (if needed)
+RUN a2enmod rewrite
+
+# Set the working directory inside the container
+WORKDIR /var/www/html/php
+
+# Copy the entire application code into the container's working directory
+COPY . /var/www/html/php
+
+# Expose port 80 (default HTTP port)
 EXPOSE 80
+
+# Command to start Apache in the foreground
+CMD ["apache2ctl", "-D", "FOREGROUND"]

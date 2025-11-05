@@ -17,7 +17,7 @@
 FROM php:8.2-apache
 
 # Copy the PHP files from your local 'src' directory into the container's web root
-COPY src/ /var/www/html/
+COPY . /var/www/html/
 
 # Expose port 80 to allow external access to the web server
 EXPOSE 80

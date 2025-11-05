@@ -25,6 +25,10 @@ RUN a2ensite 000-default.conf
 RUN service apache2 reload
 
 # Set the working directory for subsequent instructions
-WORKDIR /var/www/html
+WORKDIR /var/www/html/php
+COPY . .
+
+EXPOSE 80
+ENTRYPOINT apachectl -D FOREGROUND
 
 # Copy your application files into th

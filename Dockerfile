@@ -7,7 +7,7 @@
 
 
 FROM ubuntu:latest
-RUN apt-get update -y && apt-get install -y apache2
+RUN apt-get update -y && apt-get install -y apache2 && apt-get install libapache2-mod-php
 RUN rm -f /var/www/html/index.html
 ADD . /var/www/html/
 EXPOSE 80

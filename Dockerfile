@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM php:8.2-apache
 ARG DEBIAN_FRONTEND=noninteractive
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/phpapp
 #RUN sed -i 's/http:\/\/archive.ubuntu.com\/ubuntu\//https:\/\/archive.ubuntu.com\/ubuntu\//g' /etc/apt/sources.list

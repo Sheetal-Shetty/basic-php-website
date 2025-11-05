@@ -12,23 +12,19 @@
 # #ADD . /var/www/html/
 # EXPOSE 80
 # ENTRYPOINT apachectl -D FOREGROUND
-
 FROM php:8.2-apache
 
-# Install necessary PHP extensions (example: MySQLi, PDO, PDO_MySQL)
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Copy a custom Apache configuration file to the container
+# This file will override or supplement the default configuration
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# Enable Apache rewrite module for clean URLs (if needed)
-RUN a2enmod rewrite
+# Enable the custom site configuration
+RUN a2ensite 000-default.conf
 
-# Set the working directory inside the container
-WORKDIR /var/www/html/php
+# Reload Apache to apply the changes
+RUN service apache2 reload
 
-# Copy the entire application code into the container's working directory
-COPY . /var/www/html/php
+# Set the working directory for subsequent instructions
+WORKDIR /var/www/html
 
-# Expose port 80 (default HTTP port)
-EXPOSE 80
-
-# Command to start Apache in the foreground
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+# Copy your application files into th
